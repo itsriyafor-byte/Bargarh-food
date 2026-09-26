@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { dataService } from '@/lib/dataService';
 import { Restaurant, Order, AuditLog } from '@/types';
+import AdminTrendsChart from '@/components/AdminTrendsChart';
 
 export default function AdminDashboardPage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -324,28 +325,33 @@ export default function AdminDashboardPage() {
 
       {/* Tab: Platform Analytics */}
       {activeTab === 'analytics' && (
-        <div className="bg-white rounded-3xl p-6 border border-[#cac4d0] shadow-xs space-y-4">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#49454f]">
-            Financial & Marketplace Analytics
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div className="p-4 bg-[#fdf8ff] rounded-2xl border border-[#cac4d0]">
-              <span className="text-gray-500">Gross Merchandise Value (GMV)</span>
-              <div className="text-xl font-bold text-[#1c1b1f] mt-1">₹{totalGMV}</div>
+        <div className="space-y-6">
+          {/* 30-Day Trends Chart using Recharts */}
+          <AdminTrendsChart orders={orders} />
+
+          <div className="bg-white rounded-3xl p-6 border border-[#cac4d0] shadow-xs space-y-4">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#49454f]">
+              Financial & Marketplace Breakdown
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="p-4 bg-[#fdf8ff] rounded-2xl border border-[#cac4d0]">
+                <span className="text-gray-500">Gross Merchandise Value (GMV)</span>
+                <div className="text-xl font-bold text-[#1c1b1f] mt-1">₹{totalGMV}</div>
+              </div>
+              <div className="p-4 bg-[#fdf8ff] rounded-2xl border border-[#cac4d0]">
+                <span className="text-gray-500">Delivered Orders Volume</span>
+                <div className="text-xl font-bold text-emerald-700 mt-1">₹{deliveredSales}</div>
+              </div>
+              <div className="p-4 bg-[#fdf8ff] rounded-2xl border border-[#cac4d0]">
+                <span className="text-gray-500">Platform Commission (Avg ~10%)</span>
+                <div className="text-xl font-bold text-[#6750a4] mt-1">₹{platformCommissionEst}</div>
+              </div>
             </div>
-            <div className="p-4 bg-[#fdf8ff] rounded-2xl border border-[#cac4d0]">
-              <span className="text-gray-500">Delivered Orders Volume</span>
-              <div className="text-xl font-bold text-emerald-700 mt-1">₹{deliveredSales}</div>
-            </div>
-            <div className="p-4 bg-[#fdf8ff] rounded-2xl border border-[#cac4d0]">
-              <span className="text-gray-500">Platform Commission (Avg ~10%)</span>
-              <div className="text-xl font-bold text-[#6750a4] mt-1">₹{platformCommissionEst}</div>
-            </div>
+            <p className="text-xs text-[#79747e] pt-2">
+              * Note: Restaurants collect COD directly upon delivery. Commissions can be settled
+              periodically through the platform ledger.
+            </p>
           </div>
-          <p className="text-xs text-[#79747e] pt-2">
-            * Note: Restaurants collect COD directly upon delivery. Commissions can be settled
-            periodically through the platform ledger.
-          </p>
         </div>
       )}
 
